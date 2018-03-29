@@ -1,12 +1,12 @@
 case node['platform_family']
 when 'rhel', 'fedora'
-  user = 'apache'
-  group = 'apache'
-  conf_dir = '/etc/php.d'
-  pool_conf_dir = '/etc/php-fpm.d'
-  conf_file = '/etc/php-fpm.conf'
+  user = 'nginx'
+  group = 'nginx'
+  conf_dir = '/etc/php-5.6.d'
+  pool_conf_dir = '/etc/php-fpm-5.6.d'
+  conf_file = '/etc/php-fpm-5.6.conf'
   error_log = '/var/log/php-fpm/error.log'
-  pid = '/var/run/php-fpm/php-fpm.pid'
+  pid = '/var/run/php-fpm/php-fpm-5.6.pid'
 else
   user = 'www-data'
   group = 'www-data'
@@ -15,7 +15,7 @@ else
     php_fpm_name = 'php7.0-fpm'
   else
     php_conf_dir = '/etc/php5'
-    php_fpm_name = 'php5-fpm'
+    php_fpm_name = 'php-fpm-5.6'
   end
   conf_dir = "#{php_conf_dir}/fpm/conf.d"
   pool_conf_dir = "#{php_conf_dir}/fpm/pool.d"
@@ -48,6 +48,9 @@ default['php-fpm']['security_limit_extensions'] = '.php'
 default['php-fpm']['listen_mode'] = '0660'
 default['php-fpm']['listen'] = '/var/run/php-fpm-%{pool_name}.sock'
 
+default['php-fpm']['package_name'] = 'php56-fpm'
+default['php-fpm']['service_name'] = 'php-fpm-5.6'
+
 default['php-fpm']['pools'] = {
   'www' => {
     enable: true,
@@ -60,8 +63,8 @@ default['php-fpm']['version'] = nil
 
 case node['platform_family']
 when 'rhel'
-  default['php-fpm']['yum_url'] = 'http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/'
-  default['php-fpm']['yum_mirrorlist'] = 'http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror'
+  default['php-fpm']['yum_url'] = 'http://rpms.famillecollet.com/enterprise/7/remi/$basearch/'
+  default['php-fpm']['yum_mirrorlist'] = 'http://rpms.famillecollet.com/enterprise/7/remi/mirror'
 when 'fedora'
   default['php-fpm']['skip_repository_install'] = true
 end
